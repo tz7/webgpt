@@ -1,1 +1,1 @@
-# webgpt
+# Webgpt Project mit Symfony 6.2.7, Fetch API und PostgreSQL auf rolster.eu

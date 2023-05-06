@@ -1,3 +1,5 @@
+sessionStorage.removeItem('conversationId');
+
 document.addEventListener('DOMContentLoaded', function () {
     async function loadConversation(conversationId) {
         sessionStorage.setItem('conversationId', conversationId);
