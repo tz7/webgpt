@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+{% block navbar %}
+    {% include 'nav.html.twig' %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="d-flex flex-row vh-100">
+        <div class="col-2 p-0">
+            <div class="card h-100" id="sideBar">
+                <!-- Add a "New Chat" button -->
+                <div class="mt-4"></div>
+                <button id="newChatButton" class="btn btn-secondary mt-5">New Chat</button>
+                <div class="card-body">
+                    <div class="card-text mt-1">
+                        <div class="list-group" id="sideBarCard">
+                            {% for conversation in conversations %}
+                                <a href="#" class="list-group-item list-group-item-action custom-list-group-item"
+                                   onclick="loadConversation({{ conversation.id }}); return false;">
+                                    {{ conversation.summary }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-8 mt-5">
+            <div class="card h-100 border-0 mt-2" id="cardChat">
+                <div class="card-body" id="cardBodyChat">
+                    <div class="row h-100">
+                        <div class="col-1 me-5">
+                            {# Empty space #}
+                        </div>
+                        <div class="col-8">
+                            <div class="mt-2">
+                                <div id="chatBox"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 mb-3 fixed-bottom">
+                        <div class="row h-100">
+                            <div class="col-3">
+                                {# Empty space #}
+                            </div>
+                            <div class="col-5">
+                                <div class="input-group ms-3">
+                                    <input id="userInput" type="text" class="form-control"
+                                           placeholder="Type your message here...">
+                                    <button id="sendButton" class="btn">Send</button>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                {# Empty space #}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {#        Kurze quick and dirty Todo Liste #}
+        <div class="col-2 p-0 mt-5">
+            <div class="card h-100" id="sideBar">
+                <div class="card-body">
+                    <div class="card-text mt-1">
+                        <div class="list-group" id="sideBarCard">
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                <div class="text-center">
+                                    <h3><b>Todo</b></h3>
+                                </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                            <div class="ms-3">
+                                <h3><b>Frontend</b></h3>
+                            </div>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Todo list-group mit ausklappbarem Filter(Chat Einstellungen) ersetzen
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Navbar Abstände ordentlich gestalten
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Navbar Theme und Language picker (Twig, css, translate und js)
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Bootstrap modal (account settings) mit ajax request für Daten
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - GPT 4 checkbox mit Warning
+                            </a>
+
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Login styling#}
+{#                            </a>#}
+
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Register styling#}
+{#                            </a>#}
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Twig partialn
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - css partialn
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - CRUD für User
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                <div class="ms-3">
+                                    <h3><b>Backend</b></h3>
+                                </div>
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - GPT 4 checkbox per settings entity speichern. (userId, setting1, setting2 ...)
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Register access 'code' implementieren (user entity erweitern)
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Register login fix
+                            </a>
+
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Register seite für alle freischalten#}
+{#                            </a>#}
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Account und Historie löschen
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Navbar Theme und Language picker (entity User erweitern)
+                            </a>
+
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - ConversationId richtig vom Frontend übergeben und im Backend korrekt handeln#}
+{#                            </a>#}
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - ApiController request auf ModelFactory umstellen (oof..., das ist etwas mehr an Umstellungen)
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Nach ModelFactory Umstellung die sidebar summary implementieren
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Context beibehalten mit letzten N nachrichten als Anhang zur Message.
+                            </a>
+
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - TextAnalyticsFactory? Microsoft Azure Text Analytics API für Keyword extraction als Start.#}
+{#                            </a>#}
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Statt MS Text Analytics, keyword extraction mit GPT 3.5? (KeywordsService)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('js/api.js') }}" defer></script>
+        <script src="{{ asset('js/history.js') }}" defer></script>
+    {% endblock %}
