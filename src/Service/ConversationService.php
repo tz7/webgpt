@@ -22,13 +22,14 @@ class ConversationService
         $this->user = $this->tokenStorage->getToken()->getUser();
     }
 
-    public function createConversation(): Conversation
+    public function createConversation($summary): Conversation
     {
         $datetime = new DateTime();
 
         $conversation = new Conversation();
         $conversation->setUserId($this->user);
-        $conversation->setSummary('Not yet implemented');
+//        $conversation->setSummary('Not yet implemented');
+        $conversation->setSummary($summary);
         $conversation->setDate($datetime);
 
         $entityManager = $this->entityManager;

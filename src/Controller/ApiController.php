@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Service\ApiResponseService;
 use App\Service\ConversationService;
 use App\Service\HistoryService;
+use App\Service\OpenAI\Factory\OpenAiFactoryInterface;
+use App\Service\SummaryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,58 +17,54 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class ApiController extends AbstractController
 {
 
-    private $httpClient;
+    private $openAiFactory;
+    private $apiResponseService;
 
-    public function __construct(HttpClientInterface $httpClient)
+    public function __construct(OpenAiFactoryInterface $openAiFactory, ApiResponseService $apiResponseService)
     {
-        $this->httpClient = $httpClient;
+        $this->openAiFactory = $openAiFactory;
+        $this->apiResponseService = $apiResponseService;
     }
 
     #[Route('/api', name: 'app_api')]
-    public function chat(Request $request, ConversationService $conversationService, HistoryService $historyService): Response
+    public function chat(Request $request, ConversationService $conversationService, HistoryService $historyService, SummaryService $summaryService): Response
     {
         $data = json_decode($request->getContent(), true);
         $message = $data['message'];
         $conversationId = $data['conversationId'] ?? null;
 
+        $parameters = [
+            'temperature' => $data['temperature'] ?? 0.7,
+        ];
+
         if ($conversationId) {
             $conversation = $conversationService->getConversation($conversationId);
         } else {
-            $conversation = $conversationService->createConversation();
+            //Add Summary
+            $response = $summaryService->addSummary($message, $parameters);
+            //Create new Conversation with Summary
+            $conversation = $conversationService->createConversation($response);
         }
 
-        $response = $this->httpClient->request('POST', 'https://api.openai.com/v1/chat/completions', [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer ' . $_ENV['OPENAI_API_KEY']
-            ],
-            'json' => [
-                'model' => 'gpt-3.5-turbo',
-                'messages' => [
-                    [
-                        'role' => 'user',
-                        'content' => $message
-                    ]
-                ],
-                'temperature' => 0.7,
-            ]
-        ]);
+        $modelName = $data['model'] ?? 'Gpt35Turbo'; // Default to 'Gpt35Turbo' if not provided
+        $aiParameter = $this->openAiFactory->createParameter($modelName);
+        $aiModel = $this->openAiFactory->createModel($modelName, $aiParameter);
 
-        $content = $response->toArray();
 
-        //Add user Message to History
-        $historyService->addMessage($conversation, $message);
+        $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $message, $parameters);
 
-        //Add Ai Message to History
-        $generatedTokens = $content['choices'][0]['message'];
-        $generatedMessageAsText = implode(' ', $generatedTokens);
-        // Remove "assistant" prefix from message
-        $generatedMessageAsText = preg_replace('/^assistant\s+/i', '', $generatedMessageAsText);
-        $historyService->addMessage($conversation, $generatedMessageAsText);
+        if ($response['status'] === 'success') {
+            // Add user message to history
+            $historyService->addMessage($conversation, $message);
 
-        //Prepare json response
-        $generatedMessage = $content['choices'][0]['message']['content'];
+            // Add AI message to history
+            $generatedMessage = $response['generatedMessage'];
+            $historyService->addMessage($conversation, $generatedMessage);
 
-        return $this->json(['response' => $generatedMessage]);
+            // Prepare JSON response
+            return $this->json(['response' => $generatedMessage]);
+        } else {
+            return $this->json(['error' => $response['message']], 500);
+        }
     }
 }

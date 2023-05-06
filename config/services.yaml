@@ -22,3 +22,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    #CUSTOM SERVICES AUTO WIRING    - AW
+
+    App\Service\ConversationService:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.token_storage'
+
+    App\Service\HistoryService:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@App\Repository\HistoryRepository'
+            - '@security.token_storage'
+
