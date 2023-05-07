@@ -28,7 +28,6 @@ class ConversationService
 
         $conversation = new Conversation();
         $conversation->setUserId($this->user);
-//        $conversation->setSummary('Not yet implemented');
         $conversation->setSummary($summary);
         $conversation->setDate($datetime);
 

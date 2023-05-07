@@ -46,5 +46,23 @@ class HistoryService
 
         return $history;
     }
-    
+
+    /**
+     * @param Conversation $conversation
+     * @param int $maxMessages (Value = available space per Token estimate)
+     * @return array
+     */
+    public function getLastMeassages(Conversation $conversation, int $maxMessages): array
+    {
+        if ($conversation->getUserId() !== $this->user) {
+            return [];
+        }
+
+        $history = $this->historyRepository->findBy(['conversationId' => $conversation]);
+
+        // Fetch the last N amount of messages
+        $filteredHistory = array_slice($history, -$maxMessages);
+
+        return $filteredHistory;
+    }
 }

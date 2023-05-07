@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\ApiResponseService;
 use App\Service\ConversationService;
 use App\Service\HistoryService;
+use App\Service\MemoryService;
 use App\Service\OpenAI\Factory\OpenAiFactoryInterface;
 use App\Service\SummaryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +28,7 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api', name: 'app_api')]
-    public function chat(Request $request, ConversationService $conversationService, HistoryService $historyService, SummaryService $summaryService): Response
+    public function chat(Request $request, ConversationService $conversationService, HistoryService $historyService, SummaryService $summaryService, MemoryService $memoryService): Response
     {
         $data = json_decode($request->getContent(), true);
         $message = $data['message'];
@@ -50,8 +51,9 @@ class ApiController extends AbstractController
         $aiParameter = $this->openAiFactory->createParameter($modelName);
         $aiModel = $this->openAiFactory->createModel($modelName, $aiParameter);
 
+        $messageWithMemory = $memoryService->createMemory($historyService, $conversation, $message);
 
-        $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $message, $parameters);
+        $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $messageWithMemory, $parameters);
 
         if ($response['status'] === 'success') {
             // Add user message to history

@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const userInput = document.getElementById('userInput');
     const chatBox = document.getElementById('chatBox');
 
+
     function addMessage(content, sender) {
         const messageCard = document.createElement('div');
         messageCard.classList.add('card', 'mb-3', 'card-api', 'rounded-3');
@@ -55,7 +56,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         addMessage(message, 'You');
         userInput.value = '';
+
+        // Show the loading indicator
+        const loadingElement = document.getElementById('loading');
+        loadingElement.classList.remove('d-none');
+
         const chatGPTResponse = await sendMessage(message);
+
+        // Hide the loading indicator
+        loadingElement.classList.add('d-none');
 
         if (chatGPTResponse.error) {
             addMessage(chatGPTResponse.error, 'Error');
