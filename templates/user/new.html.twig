@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New User{% endblock %}
+
+{% block navbar %}
+    {% include '/_partials/nav.html.twig' %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-6">
+            <h1 class="pt-5 mt-5">Create new User</h1>
+
+            {{ form_start(form) }}
+            <div class="form-group">
+                {{ form_label(form.username) }}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.roles) }}
+                {% for choice in form.roles %}
+                    <div class="form-check">
+                        {{ form_widget(choice, {'attr': {'class': 'form-check-input'}}) }}
+                        {{ form_label(choice) }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.password) }}
+                {{ form_widget(form.password, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+            {{ form_end(form) }}
+
+            <a href="{{ path('app_user_index') }}" class="btn btn-primary mt-3">Back to list</a>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+{% endblock %}

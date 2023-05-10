@@ -35,4 +35,3 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@App\Repository\HistoryRepository'
             - '@security.token_storage'
-

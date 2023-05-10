@@ -1,93 +1,99 @@
-/* styles.css */
+/*!* styles.css *!*/
 
-/*NAV*/
+/*!*NAV*!*/
 
-.dropdown-toggle::after {
-    display: none !important;
-}
-
-/*.custom-img {*/
-/*    width: 3%;*/
+/*.dropdown-toggle::after {*/
+/*    display: none !important;*/
 /*}*/
 
-/*BODY*/
-
-body {
-    /*background: linear-gradient(to right, #191B1C 0%, #191B1C 5%, #393E40 5%, #393E40 100%);*/
-    background: #393E40;
-    overflow: hidden;
-}
-
-#sideBar {
-    background-color: #191B1C;
-    color: antiquewhite;
-    min-width: 100%;
-    overflow-x: hidden;
-}
-
-#sideBarCard {
-    background-color: #2C3032;
-}
-
-.custom-list-group-item {
-    background-color: #2C3032;
-    color: antiquewhite;
-    border: none;
-}
-
-/*.custom-list-group-item:hover {*/
-/*    background-color: #4C5052;*/
+/*.custom-input {*/
+/*    background-color: #393E40;*/
+/*    border: 2px solid #5C5953;*/
+/*    color: antiquewhite;*/
 /*}*/
 
-#cardChat {
-    /*overflow-y: scroll;*/
-}
+/*#accountSettingsModal .modal-content {*/
+/*    background-color: #2C3032;*/
+/*    color: antiquewhite;*/
+/*    min-width: 100%;*/
+/*    overflow-x: hidden;*/
+/*}*/
 
-#cardBodyChat {
-    background-color: #393E40;
-    color: antiquewhite;
-    border-color: #393E40;
-}
 
-#chatBox {
-    background-color: #393E40;
-    color: antiquewhite;
-    height: 80vh; /* set the height as needed */
-    overflow-x: hidden;
-}
 
-#userInput {
-    background-color: #393E40;
-    border: 2px solid #5C5953;
-    color: antiquewhite;
-}
+/*!*BODY*!*/
 
-#sendButton {
-    background-color: #5C5953;
-    color: darkgrey;
-}
+/*body {*/
 
-.card-api {
-    background-color: #2C3032;
-    color: antiquewhite;
-}
+/*    background: #393E40;*/
+/*    overflow: hidden;*/
+/*}*/
 
-/*LOGIN*/
+/*#sideBar {*/
+/*    background-color: #191B1C;*/
+/*    color: antiquewhite;*/
+/*    min-width: 100%;*/
+/*    overflow-x: hidden;*/
+/*}*/
 
-.login-container {
-    max-width: 400px;
-    padding: 30px;
-    margin: auto;
-    border-radius: 5px;
-    background-color: #191B1C;
-    /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
-    color: antiquewhite;
-}
+/*#sideBarCard {*/
+/*    background-color: #2C3032;*/
+/*}*/
 
-.login-container h1 {
-    text-align: center;
-    margin-bottom: 30px;
-}
+/*.custom-list-group-item {*/
+/*    background-color: #2C3032;*/
+/*    color: antiquewhite;*/
+/*    border: none;*/
+/*}*/
+
+
+
+
+
+/*#cardBodyChat {*/
+/*    background-color: #393E40;*/
+/*    color: antiquewhite;*/
+/*    border-color: #393E40;*/
+/*}*/
+
+/*#chatBox {*/
+/*    background-color: #393E40;*/
+/*    color: antiquewhite;*/
+/*    height: 80vh; !* set the height as needed *!*/
+/*    overflow-x: hidden;*/
+/*}*/
+
+/*#userInput {*/
+/*    background-color: #393E40;*/
+/*    border: 2px solid #5C5953;*/
+/*    color: antiquewhite;*/
+/*}*/
+
+/*#sendButton {*/
+/*    background-color: #5C5953;*/
+/*    color: darkgrey;*/
+/*}*/
+
+/*.card-api {*/
+/*    background-color: #2C3032;*/
+/*    color: antiquewhite;*/
+/*}*/
+
+/*!*LOGIN*!*/
+
+/*.login-container {*/
+/*    max-width: 400px;*/
+/*    padding: 30px;*/
+/*    margin: auto;*/
+/*    border-radius: 5px;*/
+/*    background-color: #191B1C;*/
+/*    color: antiquewhite;*/
+/*}*/
+
+/*.login-container h1 {*/
+/*    text-align: center;*/
+/*    margin-bottom: 30px;*/
+/*}*/
 
 
 

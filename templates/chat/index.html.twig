@@ -1,16 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block navbar %}
-    {% include 'nav.html.twig' %}
+    {% include '/_partials/nav.html.twig' %}
 {% endblock %}
 
 {% block body %}
 
-    <div class="d-flex flex-row vh-100">
+    <div class="d-flex flex-row vh-100 pt-5 mt-2">
         <div class="col-2 p-0">
             <div class="card h-100" id="sideBar">
                 <!-- Add a "New Chat" button -->
-                <div class="mt-4"></div>
                 <button id="newChatButton" class="btn btn-secondary mt-5">New Chat</button>
                 <div class="card-body">
                     <div class="card-text mt-1">
@@ -58,7 +57,7 @@
                                 <div class="input-group ms-3">
                                     <input id="userInput" type="text" class="form-control"
                                            placeholder="Type your message here...">
-                                    <button id="sendButton" class="btn">Send</button>
+                                    <button id="sendButton" class="btn btn-primary">Send</button>
                                 </div>
                             </div>
                             <div class="col-2">
@@ -181,6 +180,14 @@
                                 - Summary mit der Sprache der Nachricht generieren und nicht nur englisch
                             </a>
 
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - CSRF Token bei jeder Interaktion mit der DB abfragen
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Symfony Forms zu normalen Forms
+                            </a>
+
                             {#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item"> #}
                             {#                                - Context beibehalten mit letzten N nachrichten als Anhang zur Message. #}
                             {#                            </a> #}
@@ -190,12 +197,17 @@
                             {#                            </a> #}
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Statt MS Text Analytics, keyword extraction mit GPT 3.5? (KeywordsService) test
+                                - Keyword extraction für zu lange oder alte Messages entweder mit GPT-3.5 oder mit MS
+                                Text Analytics. Hängt von der Qualität der Keywords und der Kosten ab.
                             </a>
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
                                 - TokenAnalyserService implementieren zum dynamischen Laden der Memory anzahl Messages
                                 und einteilen der verfügbaren Tokens in Memory, UserMessage und Response.
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Rework css, wenn themes implementiert werden
                             </a>
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">

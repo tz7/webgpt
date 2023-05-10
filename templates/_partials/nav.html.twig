@@ -56,5 +56,42 @@
             </ul>
         </div>
     </nav>
-    {% block accountSettings %}{% endblock %}
+
+    {% block accountSettings %}
+        <div class="modal fade" id="accountSettingsModal" tabindex="-1" role="dialog" aria-labelledby="accountSettingsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="{{ asset('images/' ~ randomInt ~ '.jpg') }}" alt="Your Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex justify-content-end">
+                                    <button type="button" class="btn-close btn-close-white mb-2" aria-label="Close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form>
+                                    <div class="form-group">
+                                        <label for="inputField1">Field 1</label>
+                                        <input type="text" class="form-control custom-input" id="inputField1" placeholder="Enter value">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputField2">Field 2</label>
+                                        <input type="text" class="form-control custom-input" id="inputField2" placeholder="Enter value">
+                                    </div>
+                                    <!-- Add more input fields as needed -->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}
+
+
+    {#    {% block accountSettings %}#}
+{#        {% include '_partials/accountSettings.html.twig' %}#}
+{#    {% endblock %}#}
 {% endblock %}

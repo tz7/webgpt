@@ -35,7 +35,7 @@ class ApiController extends AbstractController
         $conversationId = $data['conversationId'] ?? null;
 
         $parameters = [
-            'temperature' => $data['temperature'] ?? 0.7,
+            'temperature' => $data['temperature'] ?? 1.0,
         ];
 
         if ($conversationId) {
