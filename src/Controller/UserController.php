@@ -7,6 +7,7 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -15,14 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/admin/user')]
 class UserController extends AbstractController
 {
-
-    private $passwordEncoder;
-
-    public function __construct(UserPasswordHasherInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
@@ -77,10 +70,46 @@ class UserController extends AbstractController
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('user/edit.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * TODO not yet implemented
+     * User Request of change password
+     */
+
+    #[Route('/{id}/change-password', name: 'app_user_change_password', methods: ['POST'])]
+    public function changePassword(Request $request, User $user, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        // Fetch the password from request data
+        $password = $request->request->get('password');
+
+        // Here you can add server-side validation for the password
+        // If the password is not valid, return an error response
+        if (!$this->isPasswordValid($password)) {
+            return new JsonResponse(['status' => 'error', 'errors' => 'Invalid password'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Hash the new password and set it
+        $hashedPassword = $userPasswordHasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
+
+        // Persist and flush the User entity
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // Return a successful JSON response
+        return new JsonResponse(['status' => 'success'], Response::HTTP_OK);
+    }
+
+    private function isPasswordValid(string $password): bool
+    {
+        // Here, implement your password validation logic
+        // The example assumes a minimum length of 8 characters
+        return strlen($password) >= 8;
     }
 
 

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function sendMessage(message) {
-        const conversationId = sessionStorage.getItem('conversationId');
+        let conversationId = sessionStorage.getItem('conversationId');
         try {
             const response = await fetch('/api', {
                 method: 'POST',
@@ -43,7 +43,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const data = await response.json();
-            return { response: data.response };
+            const { response: generatedMessage, conversationId: newConversationId } = data;
+            if (newConversationId) {
+                conversationId = newConversationId;
+                sessionStorage.setItem('conversationId', conversationId);
+            }
+            return { response: generatedMessage };
         } catch (error) {
             console.error('Error in API call:', error);
             return { error: `Error: ${error.message}` };

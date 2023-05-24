@@ -64,7 +64,10 @@ class ApiController extends AbstractController
             $historyService->addMessage($conversation, $generatedMessage);
 
             // Prepare JSON response
-            return $this->json(['response' => $generatedMessage]);
+            return $this->json([
+                'response' => $generatedMessage,
+                'conversationId' => $conversation->getId()
+            ]);
         } else {
             return $this->json(['error' => $response['message']], 500);
         }

@@ -5,17 +5,33 @@
 {% block navbar %}{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-2">
+            <div class="card shadow registration-card justify-content-center align-items-center">
+                <div class="card-body mt-5">
+                    <h1 class="card-title text-center">Register</h1>
+                    {{ form_start(registrationForm) }}
+                    <div class="form-group">
+                        <label class="d-block" for="{{ registrationForm.username.vars.id }}">Username</label>
+                        {{ form_widget(registrationForm.username) }}
+                    </div>
+                    <div class="form-group mt-1">
+                        <label class="d-block" for="{{ registrationForm.plainPassword.vars.id }}">Password</label>
+                        {{ form_widget(registrationForm.plainPassword) }}
+                    </div>
+                    <div class="form-group visually-hidden">
+                        <label for="{{ registrationForm.agreeTerms.vars.id }}">Agree to Terms</label>
+                        {{ form_widget(registrationForm.agreeTerms) }}
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-lg btn-primary mt-3 mb-5 w-100">Register</button>
+                    </div>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
 {% endblock %}
 
 {#{% extends 'base.html.twig' %}#}
