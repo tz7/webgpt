@@ -1,3 +1,4 @@
+// import { addMessage } from './api.js';
 sessionStorage.removeItem('conversationId');
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         messageCardBody.classList.add('card-body', 'row');
 
         const senderCol = document.createElement('div');
-        senderCol.classList.add('col-1', 'font-weight-bold');
+        senderCol.classList.add('col-1', 'font-weight-bold', 'text-nowrap');
         senderCol.textContent = sender;
 
         const contentCol = document.createElement('div');

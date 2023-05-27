@@ -2,33 +2,32 @@
 
 {% block navbar %}
 
-{#    /**#}
-{#     row, col Gridsystem? Abstände sind sehr schlecht geregelt.#}
-{#    **/#}
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-{#        TEMP!!! FIX LATER: <div class="ms-5 me-5"></div>#}
-        <div class="ms-5 me-5"></div>
-        <a class="navbar-brand" href="#"><h2><b>GPT Interface</b></h2></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-{#        TEMP!!! FIX LATER: <div class="ms-5 me-5"></div>#}
-        <div class="ms-5 me-5"></div>
-        <div class="ms-5 me-5"></div>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav me-auto">
+            <a class="navbar-brand ms-3" href="{{ path('app_chat') }}">
+                <h2><b>GPT Interface</b></h2>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                <h3 class="text-white me-3"><b>Selected Model</b></h3>
                 <li class="nav-item">
-                    <select class="form-control">
-                        <option selected>Model: GPT-3.5 Turbo</option>
-                        <option disabled>Model: GPT-4</option>
-                        <option disabled>Model: DALL·E 2</option>
+                    <select id="modelSelect" class="form-control me-3">
+                        <option value="Gpt35Turbo" selected>GPT-3.5 Turbo</option>
+                        <option value="Gpt4">GPT-4</option>
+                        <option value="DallE2" disabled>DALL·E 2</option>
                     </select>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto me-5">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="d-flex align-items-center">
+
+                <ul class="navbar-nav me-5">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {% set previousRandomInt = app.session.get('previousRandomInt') %}
                             {% set min = 1 %}
                             {% set max = 7 %}
@@ -41,49 +40,54 @@
                             {% set randomInt = random(range) %}
                             {% set _ = app.session.set('previousRandomInt', randomInt) %}
 
-                            <div class="overflow-hidden rounded-circle me-2" style="width: 40px; height: 40px;">
-                                <img src="{{ asset('images/' ~ randomInt ~ '.jpg') }}" alt="Profile Picture" class="w-100">
-                            </div>
-                            <div class="d-none d-md-block mt-1"><h4>{{ app.user.username }}</h4></div>
+                            <img src="{{ asset('images/' ~ randomInt ~ '.jpg') }}" alt="Profile Picture"
+                                 class="overflow-hidden rounded-circle me-2" style="width: 40px; height: 40px;">
+
+                            <h4 class="d-none d-md-block mt-1 text-bold">{{ app.user.username }}</h4>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#" id="accountSettings" data-bs-toggle="modal"
+                               data-bs-target="#accountSettingsModal">Account Settings</a>
+                            {# Bootstrap modal with AJAX request for data? #}
+                            <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
                         </div>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#" id="accountSettings" data-bs-toggle="modal" data-bs-target="#accountSettingsModal">Account Settings</a>
-                        {# Bootstrap modal with AJAX request for data? #}
-                        <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    </li>
+                </ul>
+            </div>
     </nav>
 
+
     {% block accountSettings %}
-        <div class="modal fade" id="accountSettingsModal" tabindex="-1" role="dialog" aria-labelledby="accountSettingsModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl" role="document">
+        <div class="modal fade" id="accountSettingsModal" tabindex="-1" role="dialog"
+             aria-labelledby="accountSettingsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable d-flex justify-content-center align-items-center" role="document">
                 <div class="modal-content">
-                    <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <img src="{{ asset('images/' ~ randomInt ~ '.jpg') }}" alt="Your Image" class="img-fluid">
+                            <div class="col-6">
+                                <img src="{{ asset('images/' ~ randomInt ~ '.jpg') }}" alt="Your Image"
+                                     class="img-fluid rounded-start">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
                                 <div class="d-flex justify-content-end">
-                                    <button type="button" class="btn-close btn-close-white mb-2" aria-label="Close" data-bs-dismiss="modal"></button>
+                                    <button type="button" class="btn-close btn-close-white mb-2" aria-label="Close"
+                                            data-bs-dismiss="modal"></button>
                                 </div>
                                 <form>
                                     <div class="form-group">
                                         <label for="inputField1">Field 1</label>
-                                        <input type="text" class="form-control custom-input" id="inputField1" placeholder="Enter value">
+                                        <input type="text" class="form-control custom-input" id="inputField1"
+                                               placeholder="Enter value">
                                     </div>
                                     <div class="form-group">
                                         <label for="inputField2">Field 2</label>
-                                        <input type="text" class="form-control custom-input" id="inputField2" placeholder="Enter value">
+                                        <input type="text" class="form-control custom-input" id="inputField2"
+                                               placeholder="Enter value">
                                     </div>
                                     <!-- Add more input fields as needed -->
                                 </form>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -91,7 +95,7 @@
     {% endblock %}
 
 
-    {#    {% block accountSettings %}#}
-{#        {% include '_partials/accountSettings.html.twig' %}#}
-{#    {% endblock %}#}
+    {#    {% block accountSettings %} #}
+    {#        {% include '_partials/accountSettings.html.twig' %} #}
+    {#    {% endblock %} #}
 {% endblock %}

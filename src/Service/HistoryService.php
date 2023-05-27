@@ -65,4 +65,9 @@ class HistoryService
 
         return $filteredHistory;
     }
+
+    public function delete()
+    {
+        
+    }
 }

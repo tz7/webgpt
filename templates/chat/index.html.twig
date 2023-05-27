@@ -6,13 +6,13 @@
 
 {% block body %}
 
-    <div class="d-flex flex-row vh-100 pt-5 mt-2">
-        <div class="col-2 p-0">
+    <div class="d-flex flex-row vh-100 pt-5">
+        <div class="col-2 mt-5">
             <div class="card h-100" id="sideBar">
                 <!-- Add a "New Chat" button -->
-                <button id="newChatButton" class="btn btn-secondary mt-5">New Chat</button>
-                <div class="card-body">
-                    <div class="card-text mt-1">
+                <button id="newChatButton" class="btn btn-secondary">New Chat</button>
+                <div class="card-body overflow-auto">
+                    <div class="card-text">
                         <div class="list-group" id="sideBarCard">
                             {% for conversation in conversations %}
                                 <a href="#" class="list-group-item list-group-item-action custom-list-group-item"
@@ -27,9 +27,9 @@
         </div>
 
         <div class="col-8 mt-5">
-            <div class="card h-100 border-0 mt-2" id="cardChat">
-                <div class="card-body" id="cardBodyChat">
-                    <div class="row h-100">
+            <div class="card h-90 border-0" id="cardChat">
+                <div class="card-body overflow-auto" id="cardBodyChat">
+                    <div class="row">
                         <div class="col-1 me-5">
                             {# Empty space #}
                         </div>
@@ -71,7 +71,7 @@
         {#        Kurze quick and dirty Todo Liste #}
         <div class="col-2 p-0 mt-5">
             <div class="card h-100" id="sideBar">
-                <div class="card-body">
+                <div class="card-body overflow-auto">
                     <div class="card-text mt-1">
                         <div class="list-group" id="sideBarCard">
 
@@ -89,9 +89,9 @@
                                 - Todo list-group mit ausklappbarem Filter(Chat Einstellungen) ersetzen
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Navbar Abstände ordentlich gestalten
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Navbar Abstände ordentlich gestalten#}
+{#                            </a>#}
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
                                 - Navbar Theme und Language picker (Twig, css, translate und js)
@@ -101,9 +101,9 @@
                                 - Bootstrap modal (account settings) mit ajax request für Daten
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - GPT 4 checkbox mit Warning
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - GPT 4 checkbox mit Warning (verworfen)#}
+{#                            </a>#}
 
                             {#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item"> #}
                             {#                                - Login styling #}
@@ -121,9 +121,9 @@
                                 - css partialn
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - CRUD für User
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - CRUD für User#}
+{#                            </a>#}
 
                             {#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item"> #}
                             {#                                - Ladeanzeige wenn grade per API ein fetch passiert. #}
@@ -140,9 +140,9 @@
                             {#                                klicken. Default new chat und wenn history gelickt wird, dann überschreiben? #}
                             {#                            </a> #}
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - GPT 4 checkbox per settings entity speichern. (userId, setting1, setting2 ...)
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - GPT 4 checkbox per settings entity speichern. (userId, setting1, setting2 ...) (checkbox verworfen)#}
+{#                            </a>#}
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
                                 - Register access 'code' implementieren (user entity erweitern)
@@ -157,7 +157,11 @@
                             {#                            </a> #}
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Account und Historie löschen
+                                - Account und Historie löschen (HistoryService delete+UserController
+                            </a>
+
+                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
+                                - Bug: You/GPT durcheinander bei der Anzeige
                             </a>
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
@@ -184,10 +188,6 @@
                                 - CSRF Token bei jeder Interaktion mit der DB abfragen
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Symfony Forms zu normalen Forms
-                            </a>
-
                             {#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item"> #}
                             {#                                - Context beibehalten mit letzten N nachrichten als Anhang zur Message. #}
                             {#                            </a> #}
@@ -206,9 +206,9 @@
                                 und einteilen der verfügbaren Tokens in Memory, UserMessage und Response.
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Rework css, wenn themes implementiert werden
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Rework css, wenn themes implementiert werden#}
+{#                            </a>#}
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
                                 - Bonus: Streaming von AI responses

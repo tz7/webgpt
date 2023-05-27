@@ -47,7 +47,7 @@ class ApiController extends AbstractController
             $conversation = $conversationService->createConversation($response);
         }
 
-        $modelName = $data['model'] ?? 'Gpt35Turbo'; // Default to 'Gpt35Turbo' if not provided
+        $modelName = $data['selectedModel'];
         $aiParameter = $this->openAiFactory->createParameter($modelName);
         $aiModel = $this->openAiFactory->createModel($modelName, $aiParameter);
 

@@ -2,9 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const sendButton = document.getElementById('sendButton');
     const userInput = document.getElementById('userInput');
     const chatBox = document.getElementById('chatBox');
+    const userModel = document.getElementById('modelSelect');
 
 
     function addMessage(content, sender) {
+        const chatBox = document.getElementById('chatBox');
         const messageCard = document.createElement('div');
         messageCard.classList.add('card', 'mb-3', 'card-api', 'rounded-3');
 
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
         messageCardBody.classList.add('card-body', 'row');
 
         const senderCol = document.createElement('div');
-        senderCol.classList.add('col-1', 'font-weight-bold');
+        senderCol.classList.add('col-1', 'font-weight-bold', 'text-nowrap');
         senderCol.textContent = sender;
 
         const contentCol = document.createElement('div');
@@ -26,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
         chatBox.appendChild(messageCard);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
+    // export { addMessage }; update JS...
+    // window.addMessage = addMessage; ... don't like it
 
-    async function sendMessage(message) {
+    async function sendMessage(message, selectedModel) {
         let conversationId = sessionStorage.getItem('conversationId');
         try {
             const response = await fetch('/api', {
@@ -35,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ message: message, conversationId: conversationId })
+                body: JSON.stringify({ message: message, selectedModel: selectedModel, conversationId: conversationId })
             });
 
             if (!response.ok) {
@@ -59,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const message = userInput.value.trim();
         if (message === '') return;
 
+        const selectedModel = userModel.value;
+
         addMessage(message, 'You');
         userInput.value = '';
 
@@ -66,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const loadingElement = document.getElementById('loading');
         loadingElement.classList.remove('d-none');
 
-        const chatGPTResponse = await sendMessage(message);
+        const chatGPTResponse = await sendMessage(message, selectedModel);
 
         // Hide the loading indicator
         loadingElement.classList.add('d-none');
