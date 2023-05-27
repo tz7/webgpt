@@ -59,10 +59,11 @@ class HistoryService
             return [];
         }
 
+        // Get history in descending order of id
         $history = $this->historyRepository->findBy(['conversationId' => $conversation], ['id' => 'DESC']);
 
         // Fetch the last N amount of messages
-        $filteredHistory = array_slice($history, -$maxMessages);
+        $filteredHistory = array_slice($history, 0, $maxMessages);
 
         return $filteredHistory;
     }

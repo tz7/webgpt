@@ -8,28 +8,39 @@ use Yethee\Tiktoken\EncoderProvider;
 
 class MemoryService
 {
-    public function countTokens(string $message, string $modelName = 'gpt-3.5-turbo-0301'): int {
+    public function countTokens(string $message, string $modelName = 'gpt-3.5-turbo-0301'): int
+    {
         $provider = new EncoderProvider();
         $encoder = $provider->getForModel($modelName);
         $tokens = $encoder->encode($message);
         return count($tokens);
     }
 
-    public function createMemory(HistoryService $historyService, Conversation $conversation, $newUserMessage, int $maxTokens): array {
-        $previousChats = $historyService->getLastMeassages($conversation, 50);
-        $previousChatsAsString = '';
+    public function createMemory(
+        HistoryService $historyService,
+        Conversation $conversation,
+        $newUserMessage,
+        int $maxTokens
+    ): array {
+        $previousChatsAll = $historyService->getLastMeassages($conversation, 50);
+
+        $memory = '';
         $currentTokens = 0;
 
-        foreach (array_reverse($previousChats) as $message) {
-            $messageTokens = $this->countTokens($message->getText());
-            if ($currentTokens + $messageTokens <= $maxTokens) {
-                $previousChatsAsString .= $message->getText() . "\n"; // Add each message to the string, with a newline character to separate them
-                $currentTokens += $messageTokens;
-            } else {
+        foreach ($previousChatsAll as $message) {
+            $messageText = $message->getText();
+            $messageTokens = $this->countTokens($messageText);
+
+            if ($currentTokens + $messageTokens > $maxTokens) {
                 break;
             }
+
+            $memory = $messageText . "\n" . $memory;
+            $currentTokens += $messageTokens;
         }
-        $memory = "Previous Chat:" . " (" . $previousChatsAsString . ") " . $newUserMessage;
+
+        $memory = "Previous Chat: (" . $memory . ") " . $newUserMessage;
+
         return ['memory' => $memory, 'tokenCount' => $currentTokens];
     }
 }
