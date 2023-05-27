@@ -4,19 +4,32 @@ namespace App\Service;
 
 
 use App\Entity\Conversation;
+use Yethee\Tiktoken\EncoderProvider;
 
 class MemoryService
 {
-    public function createMemory(HistoryService $historyService, Conversation $conversation, $newUserMessage): string
-    {
-        $previousChats = $historyService->getLastMeassages($conversation, 18);
+    public function countTokens(string $message, string $modelName = 'gpt-3.5-turbo-0301'): int {
+        $provider = new EncoderProvider();
+        $encoder = $provider->getForModel($modelName);
+        $tokens = $encoder->encode($message);
+        return count($tokens);
+    }
 
+    public function createMemory(HistoryService $historyService, Conversation $conversation, $newUserMessage, int $maxTokens): array {
+        $previousChats = $historyService->getLastMeassages($conversation, 50);
         $previousChatsAsString = '';
+        $currentTokens = 0;
 
-        foreach ($previousChats as $message) {
-            $previousChatsAsString .= $message->getText() . "\n"; // Add each message to the string, with a newline character to separate them
+        foreach (array_reverse($previousChats) as $message) {
+            $messageTokens = $this->countTokens($message->getText());
+            if ($currentTokens + $messageTokens <= $maxTokens) {
+                $previousChatsAsString .= $message->getText() . "\n"; // Add each message to the string, with a newline character to separate them
+                $currentTokens += $messageTokens;
+            } else {
+                break;
+            }
         }
-
-        return "Previous Chat:" . " (" . $previousChatsAsString . ") " . $newUserMessage;
+        $memory = "Previous Chat:" . " (" . $previousChatsAsString . ") " . $newUserMessage;
+        return ['memory' => $memory, 'tokenCount' => $currentTokens];
     }
 }

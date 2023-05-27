@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const data = await response.json();
-            const { response: generatedMessage, conversationId: newConversationId } = data;
+            const { response: generatedMessage, conversationId: newConversationId, tokenCount } = data;
+            console.log("Token count: ", tokenCount);  // Logging the token count
             if (newConversationId) {
                 conversationId = newConversationId;
                 sessionStorage.setItem('conversationId', conversationId);

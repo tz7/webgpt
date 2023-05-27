@@ -51,9 +51,9 @@ class ApiController extends AbstractController
         $aiParameter = $this->openAiFactory->createParameter($modelName);
         $aiModel = $this->openAiFactory->createModel($modelName, $aiParameter);
 
-        $messageWithMemory = $memoryService->createMemory($historyService, $conversation, $message);
+        $messageWithMemory = $memoryService->createMemory($historyService, $conversation, $message, 2500);
 
-        $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $messageWithMemory, $parameters);
+        $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $messageWithMemory['memory'], $parameters);
 
         if ($response['status'] === 'success') {
             // Add user message to history
@@ -66,7 +66,8 @@ class ApiController extends AbstractController
             // Prepare JSON response
             return $this->json([
                 'response' => $generatedMessage,
-                'conversationId' => $conversation->getId()
+                'conversationId' => $conversation->getId(),
+                'tokenCount' => $messageWithMemory['tokenCount']
             ]);
         } else {
             return $this->json(['error' => $response['message']], 500);

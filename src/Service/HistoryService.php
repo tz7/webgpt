@@ -8,6 +8,7 @@ use App\Repository\HistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+
 class HistoryService
 {
 
@@ -58,7 +59,7 @@ class HistoryService
             return [];
         }
 
-        $history = $this->historyRepository->findBy(['conversationId' => $conversation]);
+        $history = $this->historyRepository->findBy(['conversationId' => $conversation], ['id' => 'DESC']);
 
         // Fetch the last N amount of messages
         $filteredHistory = array_slice($history, -$maxMessages);

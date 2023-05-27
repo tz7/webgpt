@@ -12,6 +12,7 @@ class ChatController extends AbstractController
     #[Route('/', name: 'app_chat')]
     public function index(ConversationService $conversationService): Response
     {
+
         $conversations = $conversationService->getConversationAll();
 
         return $this->render('chat/index.html.twig', [
