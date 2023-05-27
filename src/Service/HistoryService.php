@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class HistoryService
 {
 
+    private $entityManager;
+    private $historyRepository;
     private $tokenStorage;
     private $user;
 

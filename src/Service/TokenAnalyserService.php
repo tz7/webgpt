@@ -2,10 +2,29 @@
 
 namespace App\Service;
 
+use Yethee\Tiktoken\EncoderProvider;
+
 class TokenAnalyserService
 {
-    /**
-     * TODO statt flat Nr von Messages für Memory, die Anzahl berechnen mit den verfügbaren Tokens und
-     * TODO Tokens einteilen/reservieren für Memory, User und response.
-     */
+
+    private $encoderProvider;
+
+    public function __construct(EncoderProvider $encoderProvider)
+    {
+        $this->encoderProvider = $encoderProvider;
+    }
+
+    public function countTokens(string $message, $modelName): int
+    {
+        $modelNameMap = [
+            'Gpt35Turbo' => 'gpt-3.5-turbo',
+            'Gpt4' => 'gpt-4',
+        ];
+
+        $modelName = $modelNameMap[$modelName] ?? $modelName;
+
+        $encoder = $this->encoderProvider->getForModel($modelName);
+        $tokens = $encoder->encode($message);
+        return count($tokens);
+    }
 }

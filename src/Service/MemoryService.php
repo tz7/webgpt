@@ -8,19 +8,12 @@ use Yethee\Tiktoken\EncoderProvider;
 
 class MemoryService
 {
-    public function countTokens(string $message, $modelName): int
+
+    private $tokenAnalyserService;
+
+    public function __construct(TokenAnalyserService $tokenAnalyserService)
     {
-        $modelNameMap = [
-            'Gpt35Turbo' => 'gpt-3.5-turbo',
-            'Gpt4' => 'gpt-4',
-        ];
-
-        $modelName = $modelNameMap[$modelName] ?? $modelName;
-
-        $provider = new EncoderProvider();
-        $encoder = $provider->getForModel($modelName);
-        $tokens = $encoder->encode($message);
-        return count($tokens);
+        $this->tokenAnalyserService = $tokenAnalyserService;
     }
 
     public function createMemory(
@@ -37,7 +30,7 @@ class MemoryService
 
         foreach ($previousChatsAll as $message) {
             $messageText = $message->getText();
-            $messageTokens = $this->countTokens($messageText, $modelName);
+            $messageTokens = $this->tokenAnalyserService->countTokens($messageText, $modelName);
 
             if ($currentTokens + $messageTokens > $maxTokens) {
                 break;
