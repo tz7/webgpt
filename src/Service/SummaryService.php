@@ -24,7 +24,7 @@ class SummaryService
         $response = $this->apiResponseService->handleOpenAiFactoryResponse(
             $aiModel,
             $aiParameter,
-            "Get the essential meaning of the following message and describe it with 5 or preferably less keywords, but sounding like a short info board and don't cite the keywords:" . " " . $message,
+            "You are a multi linguistic info board and you have limited space. Don't waste any words. Don't fully quote the message. Do not use double or single quotation marks. No words in all upper case. Try to get the meaning of the following message on the info board." . "#Message Start#" . $message . "#Message End#" . "You only answer in the language of the previous message and don't indicate the language the message is in.",
             $parameters
         );
         return $response['generatedMessage'];

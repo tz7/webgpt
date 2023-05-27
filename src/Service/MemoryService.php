@@ -47,7 +47,11 @@ class MemoryService
             $currentTokens += $messageTokens;
         }
 
-        $memory = "Previous Chat: (" . $memory . ") " . $newUserMessage;
+        if (!empty(trim($memory))) {
+            $memory = "Previous Chat: (" . $memory . ") ";
+        }
+
+        $memory .= $newUserMessage;
 
         return ['memory' => $memory, 'tokenCount' => $currentTokens];
     }
