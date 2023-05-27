@@ -51,7 +51,7 @@ class ApiController extends AbstractController
         $aiParameter = $this->openAiFactory->createParameter($modelName);
         $aiModel = $this->openAiFactory->createModel($modelName, $aiParameter);
 
-        $messageWithMemory = $memoryService->createMemory($historyService, $conversation, $message, 2500);
+        $messageWithMemory = $memoryService->createMemory($historyService, $conversation, $message, $modelName, 2500);
 
         $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $messageWithMemory['memory'], $parameters);
 
