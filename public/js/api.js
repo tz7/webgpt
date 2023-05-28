@@ -61,6 +61,39 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    async function updateSidebar() {
+        try {
+            const response = await fetch('/api/conversation/reload', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            const sideBarCard = document.getElementById('sideBarCard');
+            sideBarCard.innerHTML = ''; // Clear old summaries
+
+            // Append new summaries
+            for (const conversation of data) {
+                const listItem = document.createElement('a');
+                listItem.classList.add('list-group-item', 'list-group-item-action', 'custom-list-group-item');
+                listItem.href = "#";
+                listItem.onclick = function() { loadConversation(conversation.id); return false; };
+                listItem.textContent = conversation.summary;
+
+                sideBarCard.appendChild(listItem);
+            }
+
+        } catch (error) {
+            console.error('Error in API call:', error);
+        }
+    }
+
     async function processInput() {
         const message = userInput.value.trim();
         if (message === '') return;
@@ -84,6 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
             addMessage(chatGPTResponse.error, 'Error');
         } else {
             addMessage(chatGPTResponse.response, 'GPT');
+            await updateSidebar();
         }
     }
 

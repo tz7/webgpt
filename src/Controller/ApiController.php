@@ -73,4 +73,22 @@ class ApiController extends AbstractController
             return $this->json(['error' => $response['message']], 500);
         }
     }
+
+    #[Route('/api/conversation/reload', name: 'app_api_conversation_reload')]
+    public function conversations(ConversationService $conversationService): Response
+    {
+        // Get all conversations
+        $conversations = $conversationService->getConversationAll();
+
+        // Convert the conversations to a suitable format for the JSON response
+        $conversationsArray = array_map(function ($conversation) {
+            return [
+                'id' => $conversation->getId(),
+                'summary' => $conversation->getSummary()
+            ];
+        }, $conversations);
+
+        // Return the conversations as a JSON response
+        return $this->json($conversationsArray);
+    }
 }

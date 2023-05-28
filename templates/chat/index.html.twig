@@ -9,7 +9,7 @@
 
     <div class="d-flex flex-row vh-100 pt-5">
         <div class="col-2 mt-5">
-            <div class="card h-100" id="sideBar">
+            <div class="card h-100 border-0" id="sideBar">
                 <!-- Add a "New Chat" button -->
                 <button id="newChatButton" class="btn btn-secondary">New Chat</button>
                 <div class="card-body overflow-auto">
@@ -46,10 +46,12 @@
             <div class="d-flex justify-content-center fixed-bottom w-50 mx-auto">
                 <div class="col-10 mb-3">
                     <div class="input-group">
-            <textarea id="userInput" class="form-control" placeholder="Type your message here..."
-                      rows="1"></textarea>
+    <textarea id="userInput" class="form-control" style="resize: none;" placeholder="Type your message here..."
+              rows="1"></textarea>
                         <button id="sendButton" class="btn btn-primary">Send</button>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -78,14 +80,14 @@
                             {#                                - Navbar Abstände ordentlich gestalten #}
                             {#                            </a> #}
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Letzte Karte der Conversation Historie(links) nicht klickbar. (Col-3 im Weg. Anderen
-                                Weg finden den Input zu positionieren.
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Letzte Karte der Conversation Historie(links) nicht klickbar. (Col-3 im Weg. Anderen#}
+{#                                Weg finden den Input zu positionieren.#}
+{#                            </a>#}
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - Add Summary Karte zu der Conversation History, nachdem die AI genatwortet hat.
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - Add Summary Karte zu der Conversation History, nachdem die AI genatwortet hat.#}
+{#                            </a>#}
 
                             <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
                                 - Navbar Theme und Language picker (Twig, css, translate und js)
@@ -195,10 +197,10 @@
                                 Text Analytics. Hängt von der Qualität der Keywords und der Kosten ab.
                             </a>
 
-                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">
-                                - TokenAnalyserService implementieren zum dynamischen Laden der Memory anzahl Messages
-                                und einteilen der verfügbaren Tokens in Memory, UserMessage und Response.
-                            </a>
+{#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item">#}
+{#                                - TokenAnalyserService implementieren zum dynamischen Laden der Memory anzahl Messages#}
+{#                                und einteilen der verfügbaren Tokens in Memory, UserMessage und Response.#}
+{#                            </a>#}
 
                             {#                            <a href="#" class="list-group-item list-group-item-action custom-list-group-item"> #}
                             {#                                - Rework css, wenn themes implementiert werden #}
