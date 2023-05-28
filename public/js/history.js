@@ -1,4 +1,3 @@
-// import { addMessage } from './api.js';
 sessionStorage.removeItem('conversationId');
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -4,6 +4,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatBox = document.getElementById('chatBox');
     const userModel = document.getElementById('modelSelect');
 
+    userInput.value = '';
+    userInput.rows = 1;
+
 
     function addMessage(content, sender) {
         const chatBox = document.getElementById('chatBox');
@@ -28,8 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
         chatBox.appendChild(messageCard);
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-    // export { addMessage }; update JS...
-    // window.addMessage = addMessage; ... don't like it
 
     async function sendMessage(message, selectedModel) {
         let conversationId = sessionStorage.getItem('conversationId');
@@ -67,7 +68,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedModel = userModel.value;
 
         addMessage(message, 'You');
-        userInput.value = '';
+        userInput.value = ''; // clear the textarea
+        userInput.rows = 1; // reset rows
 
         // Show the loading indicator
         const loadingElement = document.getElementById('loading');
@@ -90,8 +92,46 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     userInput.addEventListener('keydown', async function (event) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // prevent new line
             await processInput();
         }
+    });
+
+    // Dynamic text area. Adding/removing rows based on new lines
+
+
+    // Create shadow textarea
+    const shadowTextArea = document.createElement('textarea');
+    shadowTextArea.style.position = 'absolute';
+    shadowTextArea.style.top = '-9999px';
+    shadowTextArea.style.left = '-9999px';
+
+    const computedStyle = window.getComputedStyle(userInput);
+
+    shadowTextArea.style.width = computedStyle.width; // match width
+    shadowTextArea.style.fontSize = computedStyle.fontSize; // match font size
+    shadowTextArea.style.fontFamily = computedStyle.fontFamily; // match font family
+    shadowTextArea.style.lineHeight = computedStyle.lineHeight; // match line height
+    shadowTextArea.style.padding = computedStyle.padding; // match padding
+    shadowTextArea.style.border = computedStyle.border; // match border
+    shadowTextArea.style.letterSpacing = computedStyle.letterSpacing; // match letter spacing
+    shadowTextArea.style.wordSpacing = computedStyle.wordSpacing; // match word spacing
+    shadowTextArea.style.textRendering = computedStyle.textRendering; // match text rendering
+    shadowTextArea.style.whiteSpace = computedStyle.whiteSpace; // match white space
+    shadowTextArea.style.overflowWrap = computedStyle.overflowWrap; // match overflow wrap
+    shadowTextArea.style.boxSizing = computedStyle.boxSizing; // match box-sizing
+    shadowTextArea.style.overflow = 'hidden'; // hide scrollbar
+    document.body.appendChild(shadowTextArea);
+
+    // Listen for input event and adjust rows as needed
+    userInput.addEventListener('input', function () {
+        // Calculate the number of rows
+        const text = userInput.value;
+        const lines = (text.match(/\n/g) || []).length;
+        // Make sure it does not go below 1 and above 7
+        const rows = Math.min(Math.max(lines + 1, 1), 7);
+        // Update rows of the userInput
+        userInput.rows = rows;
     });
 });
