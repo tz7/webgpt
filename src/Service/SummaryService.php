@@ -24,15 +24,13 @@ class SummaryService
         $response = $this->apiResponseService->handleOpenAiFactoryResponse(
             $aiModel,
             $aiParameter,
-            /**
-             * Task:
-             * Parameters:
-             * if/else:
-             * Message:
-             */
-            "You are a multi linguistic info board and you have limited space. Don't waste any words. Don't fully quote the message. Do not use double or single quotation marks. No words in all upper case. Try to get the meaning of the following message on the info board." . "#Message Start#" . $message . "#Message End#" . "If the previous message in the message tags is in english, ignore the following instructions: You only answer in the language of the previous message and don't indicate the language the message is in.",
+            "ChatGPT, imagine you're a global news headline writer. Your task is to distill the essence of this message into a headline and display it. The headline should be in the same language as the message without specifying the language. If the message is too short for this task, simply display keywords and if you absolutely can't comprehend the message, display 'New Chat'. Here's your assignment:" . "'" . $message . "'",
             $parameters
         );
+        if ($response['generatedMessage'][0] === '"' && $response['generatedMessage'][strlen($response['generatedMessage']) - 1] === '"') {
+            // Remove double quotation marks from the first and last characters
+            $response['generatedMessage'] = trim($response['generatedMessage'], '"');
+        }
         return $response['generatedMessage'];
     }
 }

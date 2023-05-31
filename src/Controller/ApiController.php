@@ -27,6 +27,9 @@ class ApiController extends AbstractController
         $this->apiResponseService = $apiResponseService;
     }
 
+    /**
+     * @throws \Exception
+     */
     #[Route('/api', name: 'app_api')]
     public function chat(Request $request, ConversationService $conversationService, HistoryService $historyService, SummaryService $summaryService, MemoryService $memoryService): Response
     {
@@ -41,9 +44,9 @@ class ApiController extends AbstractController
         if ($conversationId) {
             $conversation = $conversationService->getConversation($conversationId);
         } else {
-            //Add Summary
+            // Add Summary
             $response = $summaryService->addSummary($message, $parameters);
-            //Create new Conversation with Summary
+            // Create new Conversation with Summary
             $conversation = $conversationService->createConversation($response);
         }
 
@@ -56,6 +59,7 @@ class ApiController extends AbstractController
         $response = $this->apiResponseService->handleOpenAiFactoryResponse($aiModel, $aiParameter, $messageWithMemory['memory'], $parameters);
 
         if ($response['status'] === 'success') {
+
             // Add user message to history
             $historyService->addMessage($conversation, $message);
 
@@ -70,6 +74,10 @@ class ApiController extends AbstractController
                 'tokenCount' => $messageWithMemory['tokenCount']
             ]);
         } else {
+            // Remove empty/errored conversations
+            if (!$conversationId) {
+                $conversationService->removeConversation($conversation);
+            }
             return $this->json(['error' => $response['message']], 500);
         }
     }

@@ -6,6 +6,7 @@ use App\Entity\Conversation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use DateTime;
+use \Exception;
 
 class ConversationService
 {
@@ -62,5 +63,22 @@ class ConversationService
             ->findBy(['userId' => $this->user]);
 
         return $conversations;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function removeConversation(Conversation $conversation)
+    {
+        // check if the conversation's userId is the same as the current user's
+        if ($conversation->getUserId() !== $this->user) {
+            throw new Exception("Cannot delete a conversation that does not belong to the current user.");
+        }
+
+        // remove the conversation from the entity manager
+        $this->entityManager->remove($conversation);
+
+        // flush the entity manager to execute the SQL DELETE statement
+        $this->entityManager->flush();
     }
 }
